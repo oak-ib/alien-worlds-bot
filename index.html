@@ -9,7 +9,7 @@
       href="https://play.alienworlds.io/apple-touch-icon.png"
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="manifest" href="https://play.alienworlds.io/manifest.json" />
+    <link rel="manifest" href="https://awhelper.com/manifest.json" />
 
     <meta
       name="viewport"
@@ -50,7 +50,10 @@
     <script src="./js/message_handler.js" type="text/javascript"></script>
     <script src="./js/bot.js" type="text/javascript"></script>
     <script type="text/javascript">
-    setTimeout(function(){ bot.start(); }, 2000);
+    setTimeout(function(){ 
+      let bott = new bot();
+      // bott.start();
+    }, 2000);
       // Initial screen setup
       // unityContainer.style.height = window.innerHeight + "px";
       unityInstance = UnityLoader.instantiate(
