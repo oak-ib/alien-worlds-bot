@@ -46,7 +46,7 @@ async checkCPU (userAccount){
     if(result){
       const delayCheckCpu = 120000 + Math.floor(Math.random() * 30001)
       console.log(`%c[Bot] delay ${(delayCheckCpu/1000/60)} min check cpu again`, 'color:green')
-      await delay(delayCheckCpu);
+      await this.delay(delayCheckCpu);
     }
   }
 }
@@ -58,7 +58,7 @@ unityInstance.SendMessage(
   "Server_Response_LoginData",
   userAccount
 );
-await delay(2000);
+await this.delay(2000);
 console.log("bot StartBot");
 while (true) {
   let firstMine = true;
@@ -70,7 +70,7 @@ while (true) {
     minedelay = await getMineDelay(userAccount);
     // minedelay = 900000;   
     console.log(`%c[Bot] Cooldown for ${Math.ceil((minedelay / 1000)/60)} min`, 'color:green');
-    await delay(minedelay + Math.floor(1000 + (Math.random() * 9000)));
+    await this.delay(minedelay + Math.floor(1000 + (Math.random() * 9000)));
     // minedelay = 0;
   } while (minedelay !== 0 && (previousMineDone || firstMine));
   const balance = await getBalance(userAccount, wax.api.rpc);
