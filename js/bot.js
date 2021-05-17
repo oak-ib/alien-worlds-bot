@@ -69,9 +69,10 @@ while (true) {
     await this.checkCPU(userAccount);
     minedelay = await getMineDelay(userAccount);
     // minedelay = 900000;   
-    console.log(`%c[Bot] Cooldown for ${Math.ceil((minedelay / 1000)/60)} min`, 'color:green');
+    console.log(`%c[Bot] Cooldown for ${Math.ceil((minedelay / 1000)/60)} min || ${minedelay} ms`, 'color:green');
     await this.delay(minedelay + Math.floor(1000 + (Math.random() * 9000)));
     // minedelay = 0;
+    console.log(minedelay !== 0 && (previousMineDone || firstMine),minedelay,previousMineDone,firstMine)
   } while (minedelay !== 0 && (previousMineDone || firstMine));
   const balance = await getBalance(userAccount, wax.api.rpc);
   console.log(`%c[Bot] balance: (before mine) ${balance}`, 'color:green');
