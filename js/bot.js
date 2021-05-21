@@ -3,6 +3,7 @@ class bot{
   constructor() {
     this.isBotRunning = false;
     this.alertCaptcha = false;
+    this.checkCpuPercent = 90;
 }
 
 delay = (millis) =>
@@ -39,7 +40,7 @@ async checkCPU (userAccount){
         const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
         console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
         this.appendMessage(`CPU ${rawPercent}%`)
-        if(rawPercent < 90){
+        if(rawPercent < this.checkCpuPercent){
           result = false;
         }
       }
@@ -154,7 +155,6 @@ while (this.isBotRunning) {
             nbStr = nbStr.substring(0, nbStr.length - 4);
             let balance = (parseFloat(obStr) + parseFloat(nbStr)).toFixed(4);
             amounts.set(t.act.data.to, balance.toString() + " TLM");
-            this.appendMessage(balance.toString() + " TLM")
           } else {
             amounts.set(t.act.data.to, t.act.data.quantity);
           }
@@ -165,6 +165,7 @@ while (this.isBotRunning) {
         "Server_Response_Claim",
         amounts.get(mine_work.account)
       );
+      this.appendMessage(amounts.get(mine_work.account) + " TLM")
       firstMine = false;
       previousMineDone = true;
       checkMinedelay = true;

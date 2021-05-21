@@ -28,6 +28,7 @@
     <div class="webgl-content">
       <button id="btn-controller" onclick="botRunningController()">START</button>
       <button id="btn-alert" onclick="botAlertController()">Alert ON</button>
+      <input type="number" id="cpu" name="cpu" value="90">
       <textarea id="box-message" rows="30" style="resize: none;width: 550px;"></textarea>
     </div>
 
@@ -39,11 +40,15 @@
     <script type="text/javascript">
       var bott = new bot();
       function botRunningController(){
+        const checkCpu = parseInt(document.getElementById("cpu").value)
         if(bott.isBotRunning == true){
           bott.stop()
           document.getElementById("btn-controller").innerHTML = "START"
         }else{
           bott.start()
+          if(checkCpu > 0){
+            this.checkCpuPercent = checkCpu
+          }
           document.getElementById("btn-controller").innerHTML = "STOP"
         }
       }
