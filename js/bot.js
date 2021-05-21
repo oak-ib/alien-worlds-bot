@@ -1,5 +1,10 @@
 class bot{
 
+  constructor() {
+    this.isBotRunning = false;
+    this.alertCaptcha = false;
+}
+
 delay = (millis) =>
   new Promise((resolve, reject) => {
     setTimeout((_) => resolve(), millis);
@@ -33,7 +38,7 @@ async checkCPU (userAccount){
       if(accountDetail.cpu_limit != null){
         const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
         console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
-        console.log(`%c[Bot] cpu_limit max:${accountDetail.cpu_limit.max} use:${accountDetail.cpu_limit.used} = ${accountDetail.cpu_limit.max - accountDetail.cpu_limit.used}`, 'color:green')
+        this.appendMessage(`CPU ${rawPercent}%`)
         if(rawPercent < 90){
           result = false;
         }
@@ -51,6 +56,17 @@ async checkCPU (userAccount){
   }
 }
 
+appendMessage(msg){
+  const dateNow = new Date(Date.now()).toISOString();
+  document.getElementById("box-message").value += '\n'+ `${dateNow} : ${msg}`
+}
+
+async stop() {
+  this.isBotRunning = false;
+  this.appendMessage("bot STOP")
+  console.log(`%c[Bot] stop`, 'color:green');
+}
+
 async start() {
 const userAccount = await wax.login();
 unityInstance.SendMessage(
@@ -58,21 +74,26 @@ unityInstance.SendMessage(
   "Server_Response_LoginData",
   userAccount
 );
+this.isBotRunning = true;
 await this.delay(2000);
 console.log("bot StartBot");
-while (true) {
+this.appendMessage("bot START")
+let checkMinedelay = false
+while (this.isBotRunning) {
   let firstMine = true;
   let previousMineDone = false;
   let minedelay = 1;
   do {
-    console.log("bot checkCPU");
-    await this.checkCPU(userAccount);
-    minedelay = await getMineDelay(userAccount);
-    // minedelay = 900000;   
-    console.log(`%c[Bot] Cooldown for ${Math.ceil((minedelay / 1000)/60)} min || ${minedelay} ms`, 'color:green');
+    // minedelay = await getMineDelay(userAccount);
+    if(checkMinedelay){
+      minedelay = 810000;
+  }   
+    console.log(`%c[Bot] Cooldown for ${Math.ceil((minedelay / 1000)/60)} min`, 'color:green');
+    this.appendMessage(`Cooldown for ${Math.ceil((minedelay / 1000)/60)} min`)
     await this.delay(minedelay + Math.floor(1000 + (Math.random() * 9000)));
-    // minedelay = 0;
-    console.log(minedelay !== 0 && (previousMineDone || firstMine),minedelay,previousMineDone,firstMine)
+    minedelay = 0;
+    console.log("bot checkCPU1");
+    await this.checkCPU(userAccount);
   } while (minedelay !== 0 && (previousMineDone || firstMine));
   const balance = await getBalance(userAccount, wax.api.rpc);
   console.log(`%c[Bot] balance: (before mine) ${balance}`, 'color:green');
@@ -88,7 +109,6 @@ while (true) {
     miner: mine_work.account,
     nonce: mine_work.rand_str,
   };
-  console.log(`%c[Bot]mine data `,mine_data, 'color:green');
   const actions = [
     {
       account: mining_account,
@@ -104,16 +124,20 @@ while (true) {
   ];
   
   try {
+    console.log("bot checkCPU2");
+    await this.checkCPU(userAccount);
+    if(this.alertCaptcha){
       const audio = new Audio('https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3');
       audio.play();
-  
+    }
+
     const result = await wax.api.transact(
       {
         actions,
       },
       {
         blocksBehind: 3,
-        expireSeconds: 90,
+        expireSeconds: 360,
       }
     );
     console.log(`%c[Bot] result is = ${result}`, 'color:green');
@@ -130,6 +154,7 @@ while (true) {
             nbStr = nbStr.substring(0, nbStr.length - 4);
             let balance = (parseFloat(obStr) + parseFloat(nbStr)).toFixed(4);
             amounts.set(t.act.data.to, balance.toString() + " TLM");
+            this.appendMessage(balance.toString() + " TLM")
           } else {
             amounts.set(t.act.data.to, t.act.data.quantity);
           }
@@ -142,6 +167,7 @@ while (true) {
       );
       firstMine = false;
       previousMineDone = true;
+      checkMinedelay = true;
     }
   } catch (err) {
     unityInstance.SendMessage(
@@ -150,10 +176,13 @@ while (true) {
       err.message
     );
     previousMineDone = false;
-    console.log(`%c[Bot] Error`, 'color:red');
+    checkMinedelay = false;
+    console.log(`%c[Bot] Error:${err.message}`, 'color:red');
+    this.appendMessage(`Error:${err.message}`)
   }
 
   const afterMindedBalance = await getBalance(userAccount, wax.api.rpc);
+  this.appendMessage(`balance (after mined): ${afterMindedBalance}`)
   const now = (new Date());
   console.log(`%c[Bot] balance (after mined): ${afterMindedBalance}`, 'color:green');
   console.log(`%c[Bot] Time : ${now}`, 'color:green');
