@@ -11,14 +11,17 @@ delay = (millis) =>
     setTimeout((_) => resolve(), millis);
   });
 
-async postData(url = '', headers = {}, data = {}) {
+async postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'no-cors', // no-cors, *cors, same-origin
+    mode: 'cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
-    headers: headers,
+    headers: {
+      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: JSON.stringify(data) // body data type must match "Content-Type" header
@@ -31,7 +34,7 @@ async checkCPU (userAccount){
 
   while(result){
     try {
-      const accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', {'Content-Type': 'application/json'}, { account_name: userAccount })
+      const accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
       
       if(accountDetail.cpu_limit != null){
         const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
@@ -58,7 +61,7 @@ appendMessage(msg , box = ''){
   const dateNow = moment().format('DD/MM/YYYY h:mm:ss');
   const boxMessage = document.getElementById("box-message"+box)
   boxMessage.value += '\n'+ `${dateNow} : ${msg}`
-  boxMessage.scrollHeight
+  boxMessage.scrollTop = boxMessage.scrollHeight;
 }
 
 async stop() {
@@ -68,7 +71,6 @@ async stop() {
 }
 
 async start() {
-
 const userAccount = await wax.login();
 unityInstance.SendMessage(
   "Controller",
@@ -184,7 +186,8 @@ while (this.isBotRunning) {
 
   const afterMindedBalance = await getBalance(userAccount, wax.api.rpc);
   this.appendMessage(`balance (after mined): ${afterMindedBalance}`)
-  console.log(`%c[Bot] balance (after mined): ${afterMindedBalance}`, 'color:green');
+  document.getElementById("text-balance").value = afterMindedBalance
+  // console.log(`%c[Bot] balance (after mined): ${afterMindedBalance}`, 'color:green');
 }
 }
 
