@@ -121,7 +121,6 @@ async start() {
       minedelay = 0;
       console.log("bot checkCPU1");
       await this.checkCPU(userAccount);
-      console.log(minedelay !== 0 && (this.previousMineDone || this.firstMine),minedelay,this.previousMineDone,this.firstMine)
     } while (minedelay !== 0 && (this.previousMineDone || this.firstMine));
     await this.mine(userAccount)
   }
