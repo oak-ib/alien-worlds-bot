@@ -197,7 +197,7 @@ async mine(userAccount){
           "Server_Response_Claim",
           amounts.get(mine_work.account)
         );
-        this.appendMessage(amounts.get(mine_work.account) + " TLM",'2')
+        this.appendMessage(amounts.get(mine_work.account),'2')
         this.firstMine = false;
         this.previousMineDone = true;
         this.checkMinedelay = true;
