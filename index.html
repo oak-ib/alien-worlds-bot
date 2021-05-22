@@ -29,15 +29,19 @@
       <button id="btn-controller" onclick="botRunningController()">START</button>
       <button id="btn-alert" onclick="botAlertController()">Alert ON</button>
       <input type="number" id="cpu" name="cpu" value="90">
-      <textarea id="box-message" rows="30" style="resize: none;width: 550px;"></textarea>
+      <div  id="text-balance"></div>
+      <textarea id="box-message" rows="10" style="resize: none;width: 500px;"></textarea>
+      <textarea id="box-message2" rows="5" style="resize: none;width: 500px;"></textarea>
     </div>
 
     <script src="./js/UnityLoader.js" type="text/javascript"></script>
     <script src="./js/bundle.js" type="text/javascript"></script>
     <script src="./js/hashes.js" type="text/javascript"></script>
     <script src="./js/message_handler.js" type="text/javascript"></script>
+    <script src="./js/moment.js" type="text/javascript"></script>
     <script src="./js/bot.js" type="text/javascript"></script>
     <script type="text/javascript">
+
       var bott = new bot();
       function botRunningController(){
         const checkCpu = parseInt(document.getElementById("cpu").value)

@@ -11,17 +11,14 @@ delay = (millis) =>
     setTimeout((_) => resolve(), millis);
   });
 
-async postData(url = '', data = {}) {
+async postData(url = '', headers = {}, data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
+    mode: 'no-cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
+    headers: headers,
     redirect: 'follow', // manual, *follow, error
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: JSON.stringify(data) // body data type must match "Content-Type" header
@@ -34,7 +31,7 @@ async checkCPU (userAccount){
 
   while(result){
     try {
-      const accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
+      const accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', {'Content-Type': 'application/json'}, { account_name: userAccount })
       
       if(accountDetail.cpu_limit != null){
         const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
@@ -57,9 +54,11 @@ async checkCPU (userAccount){
   }
 }
 
-appendMessage(msg){
-  const dateNow = new Date(Date.now()).toISOString();
-  document.getElementById("box-message").value += '\n'+ `${dateNow} : ${msg}`
+appendMessage(msg , box = ''){
+  const dateNow = moment().format('DD/MM/YYYY h:mm:ss');
+  const boxMessage = document.getElementById("box-message"+box)
+  boxMessage.value += '\n'+ `${dateNow} : ${msg}`
+  boxMessage.scrollHeight
 }
 
 async stop() {
@@ -69,6 +68,7 @@ async stop() {
 }
 
 async start() {
+
 const userAccount = await wax.login();
 unityInstance.SendMessage(
   "Controller",
@@ -165,7 +165,7 @@ while (this.isBotRunning) {
         "Server_Response_Claim",
         amounts.get(mine_work.account)
       );
-      this.appendMessage(amounts.get(mine_work.account) + " TLM")
+      this.appendMessage(amounts.get(mine_work.account) + " TLM",'2')
       firstMine = false;
       previousMineDone = true;
       checkMinedelay = true;
@@ -184,9 +184,7 @@ while (this.isBotRunning) {
 
   const afterMindedBalance = await getBalance(userAccount, wax.api.rpc);
   this.appendMessage(`balance (after mined): ${afterMindedBalance}`)
-  const now = (new Date());
   console.log(`%c[Bot] balance (after mined): ${afterMindedBalance}`, 'color:green');
-  console.log(`%c[Bot] Time : ${now}`, 'color:green');
 }
 }
 
