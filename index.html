@@ -60,15 +60,12 @@
           if(checkCpu > 0){
             bott.checkCpuPercent = checkCpu
           }
-          if(timer > 0){
-            try{
-              bott.timerDelay = (timer * 60) * 1000;
-            } catch (error) {
-              alert('timerDelay error')
-              console.error(error)
-            }
-            
-          }
+          try{
+            bott.timerDelay = (timer * 60) * 1000;
+          } catch (error) {
+            alert('timerDelay error')
+            console.error(error)
+          }           
           bott.start()
           document.getElementById("btn-controller").innerHTML = "STOP"
         }
