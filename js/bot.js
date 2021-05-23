@@ -8,6 +8,8 @@ class bot{
     this.checkMinedelay = false;
     this.firstMine = true;
     this.previousMineDone = false;
+    this.lineToken = '';
+    this.lineBypassUrl = 'https://notify-gateway.vercel.app/api/notify';
 }
 
 delay = (millis) =>
@@ -15,41 +17,43 @@ delay = (millis) =>
     setTimeout((_) => resolve(), millis);
   });
 
-async postData(url = '', data = {}) {
+async postData(url = '', data = {}, header = {'Content-Type': 'application/json'}) {
+  try {
   // Default options are marked with *
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-      'Content-Type': 'application/json'
-      // 'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
+    const response = await fetch(url, {
+      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      mode: 'cors', // no-cors, *cors, same-origin
+      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: 'same-origin', // include, *same-origin, omit
+      headers: header,
+      redirect: 'follow', // manual, *follow, error
+      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+
+    return response.json(); // parses JSON response into native JavaScript objects
+  }catch (err) {
+    this.appendMessage(`Error:${err.message}`)
+    //send bypass line notify
+    if(this.lineToken !== ''){
+      await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`Fetch:error, User:${userAccount}, Message:${err.message}` })
+    }
+    return false;
+  }
 }
 
 async checkCPU (userAccount){
   let result = true;
   while(result){
-    try {
-      const accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
+    const accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
       
-      if(accountDetail.cpu_limit != null){
-        const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
-        console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
-        this.appendMessage(`CPU ${rawPercent}%`)
-        if(rawPercent < this.checkCpuPercent){
-          result = false;
-        }
+    if(accountDetail.cpu_limit != null){
+      const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
+      console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
+      this.appendMessage(`CPU ${rawPercent}%`)
+      if(rawPercent < this.checkCpuPercent){
+        result = false;
       }
-    }catch (err) {
-      console.log(err.message);
-      result = false;
     }
     
     if(result){
@@ -118,9 +122,7 @@ async start() {
       const RandomTimeWait = minedelay + Math.floor(1000 + (Math.random() * 9000))
       this.appendMessage(`Cooldown for ${Math.ceil((RandomTimeWait / 1000)/60)} min`)
       await this.delay(RandomTimeWait);
-      minedelay = 0;
-      console.log("bot checkCPU1");
-      await this.checkCPU(userAccount);
+      minedelay = 0;      
     } while (minedelay !== 0 && (this.previousMineDone || this.firstMine));
     await this.mine(userAccount)
   }
@@ -212,6 +214,10 @@ async mine(userAccount){
       this.checkMinedelay = false;
       console.log(`%c[Bot] Error:${err.message}`, 'color:red');
       this.appendMessage(`Error:${err.message}`)
+      //send bypass line notify
+      if(this.lineToken !== ''){
+        await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`User:${userAccount} , Message:${err.message}` })
+      }
     }
 
     const afterMindedBalance = await getBalance(userAccount, wax.api.rpc);

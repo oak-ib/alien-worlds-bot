@@ -35,10 +35,10 @@
         User:<span id="text-user" style="color:blue">xxx.wax</span>
         Balance:<span id="text-balance" style="color:blue">0 TLM</span>
         Cooldown:<span id="text-cooldown" style="color:blue">0 Sec</span>
-        <button id="btn-check-mine-delay" onclick="botCheckDelay()">CheckDelay</button>
       </div>
       <textarea id="box-message" rows="8" style="resize: none;width: 500px;"></textarea>
       <textarea id="box-message2" rows="5" style="resize: none;width: 500px;"></textarea>
+      <div>Line token:<input type="text" id="line-token" name="line-token" value="DAR6ZpjxxpTmrvOC2YaQ6zUcBocIIgwhvDCugO6dlDo" style="width: 425px;"></div>      
     </div>
 
     <script src="./js/UnityLoader.js" type="text/javascript"></script>
@@ -53,6 +53,7 @@
       function botRunningController(){
         const checkCpu = parseInt(document.getElementById("cpu").value)
         const timer = parseFloat(document.getElementById("timer").value)
+        bott.lineToken = document.getElementById("line-token").value
         if(bott.isBotRunning == true){
           bott.stop()
           document.getElementById("btn-controller").innerHTML = "START"
