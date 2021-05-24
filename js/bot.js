@@ -77,7 +77,7 @@ appendMessage(msg , box = ''){
 }
 
 countDown(countDown){
-  let countDownDisplay = countDown/1000;
+  let countDownDisplay = 2;
   var x = setInterval(function() {
     document.getElementById("text-cooldown").innerHTML = countDownDisplay + " Sec"
     countDown = countDown - 1000;
