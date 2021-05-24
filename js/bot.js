@@ -42,14 +42,14 @@ async checkCPU (userAccount){
   let i = 0;
   let accountDetail = {}
   while(result){
-    if(i%2){
+    if(i%2 > 0){
       accountDetail = await this.postData('https://wax.cryptolions.io/v2/state/get_account?account='+userAccount, {}, 'GET')
       accountDetail = accountDetail.account;
     }else{
       accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
     }
-      
-    if(accountDetail.cpu_limit != null){
+      console.log('accountDetail',accountDetail)
+    if(accountDetail){
       const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
       console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
       this.appendMessage(`CPU ${rawPercent}%`)
@@ -135,7 +135,8 @@ async start() {
 async mine(userAccount){
   document.getElementById("btn-mine").disabled = true
   const balance = await getBalance(userAccount, wax.api.rpc);
-    console.log(`%c[Bot] balance: (before mine) ${balance}`, 'color:green');
+    // console.log(`%c[Bot] balance: (before mine) ${balance}`, 'color:green');
+    document.getElementById("text-balance").innerHTML = balance
     
     const mine_work = await background_mine(userAccount);
     unityInstance.SendMessage(
