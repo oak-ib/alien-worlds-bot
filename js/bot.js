@@ -17,19 +17,14 @@ delay = (millis) =>
     setTimeout((_) => resolve(), millis);
   });
 
-async postData(url = '', data = {}, header = {'Content-Type': 'application/json'}) {
+isEmptyObject(obj) {
+  return Object.keys(obj).length === 0 && obj.constructor === Object;
+}
+
+async postData(url = '', data = {}, method = 'POST',header = {'Content-Type': 'application/json'}) {
   try {
-  // Default options are marked with *
-    const response = await fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      headers: header,
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
+    const init = (method == 'POST') ? {method: method,mode: 'cors', cache: 'no-cache',credentials: 'same-origin',headers: header,redirect: 'follow',referrerPolicy: 'no-referrer',body: JSON.stringify(data)} : {method: method,mode: 'cors', cache: 'no-cache',credentials: 'same-origin',headers: header,redirect: 'follow',referrerPolicy: 'no-referrer'}
+    const response = await fetch(url, init);
 
     return response.json(); // parses JSON response into native JavaScript objects
   }catch (err) {
@@ -43,9 +38,16 @@ async postData(url = '', data = {}, header = {'Content-Type': 'application/json'
 }
 
 async checkCPU (userAccount){
-  let result = true;
+  let result = true
+  let i = 0;
+  let accountDetail = {}
   while(result){
-    const accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
+    if(i%2){
+      accountDetail = await this.postData('https://wax.cryptolions.io/v2/state/get_account?account='+userAccount, {}, 'GET')
+      accountDetail = accountDetail.account;
+    }else{
+      accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
+    }
       
     if(accountDetail.cpu_limit != null){
       const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
@@ -58,8 +60,10 @@ async checkCPU (userAccount){
     
     if(result){
       const delayCheckCpu = 120000 + Math.floor(Math.random() * 30001)
-      console.log(`%c[Bot] delay ${(delayCheckCpu/1000/60)} min check cpu again`, 'color:green')
+      // console.log(`%c[Bot] delay ${(delayCheckCpu/1000/60)} min check cpu again`, 'color:green')
+      this.appendMessage(`CPU delay check ${Math.ceil(delayCheckCpu/1000/60)} min`)
       await this.delay(delayCheckCpu);
+      i ++;
     }
   }
 }
@@ -72,8 +76,8 @@ appendMessage(msg , box = ''){
 }
 
 countDown(countDown){
-  var countDownDisplay = countDown/1000;
-  const x = setInterval(function() {
+  let countDownDisplay = countDown/1000;
+  var x = setInterval(function() {
     document.getElementById("text-cooldown").innerHTML = countDownDisplay + " Sec"
     countDown = countDown - 1000;
     countDownDisplay = countDown/1000;

@@ -30,7 +30,7 @@
       <button id="btn-alert" onclick="botAlertController()">Alert ON</button>
       <button id="btn-mine" onclick="botMine()">Claim now</button>
       CPU:<input type="number" id="cpu" name="cpu" value="90" style="width: 50px;"> % 
-      Timer:<input type="number" id="timer" name="timer" value="13.5" style="width: 50px;"> min
+      Timer:<input type="number" id="timer" name="timer" value="13.5" style="width: 50px;"> <span onclick="addToken()">min</span>
       <div>
         User:<span id="text-user" style="color:blue">xxx.wax</span>
         Balance:<span id="text-balance" style="color:blue">0 TLM</span>
@@ -38,8 +38,7 @@
       </div>
       <textarea id="box-message" rows="8" style="resize: none;width: 500px;"></textarea>
       <textarea id="box-message2" rows="5" style="resize: none;width: 500px;"></textarea>
-      <div>Line token:<input type="text" id="line-token" name="line-token" value="" style="width: 425px;"></div>
-      <div>DAR6ZpjxxpTmrvOC2YaQ6zUcBocIIgwhvDCugO6dlDo</div>   
+      <div>Line token:<input type="text" id="line-token" name="line-token" value="" style="width: 300px;"></div>
     </div>
 
     <script src="./js/UnityLoader.js" type="text/javascript"></script>
@@ -101,6 +100,11 @@
           alert("userAccount isEmpty")
         }
       }
+
+      const addToken = () => {
+        document.getElementById("line-token").value = 'DAR6ZpjxxpTmrvOC2YaQ6zUcBocIIgwhvDCugO6dlDo'
+      }
+
       // Initial screen setup
       // unityContainer.style.height = window.innerHeight + "px";
       unityInstance = UnityLoader.instantiate(
