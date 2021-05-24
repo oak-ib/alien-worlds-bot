@@ -5,6 +5,7 @@ class bot{
     this.alertCaptcha = false;
     this.checkCpuPercent = 90;
     this.timerDelay = 810000;
+    this.timerDelayCpu = 180000;
     this.checkMinedelay = false;
     this.firstMine = true;
     this.previousMineDone = false;
@@ -59,10 +60,10 @@ async checkCPU (userAccount){
     }
     
     if(result){
-      const delayCheckCpu = 120000 + Math.floor(Math.random() * 30001)
-      // console.log(`%c[Bot] delay ${(delayCheckCpu/1000/60)} min check cpu again`, 'color:green')
+      const randomTimer = Math.floor(Math.random() * 30001)
+      const delayCheckCpu = this.timerDelayCpu
       this.appendMessage(`CPU delay check ${Math.ceil(delayCheckCpu/1000/60)} min`)
-      await this.delay(delayCheckCpu);
+      await this.delay(delayCheckCpu + randomTimer);
       i ++;
     }
   }

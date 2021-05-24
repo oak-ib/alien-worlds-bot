@@ -29,8 +29,11 @@
       <button id="btn-controller" onclick="botRunningController()">START</button>
       <button id="btn-alert" onclick="botAlertController()">Alert ON</button>
       <button id="btn-mine" onclick="botMine()">Claim now</button>
-      CPU:<input type="number" id="cpu" name="cpu" value="90" style="width: 50px;"> % 
-      Timer:<input type="number" id="timer" name="timer" value="13.5" style="width: 50px;"> <span onclick="addToken()">min</span>
+      Timer mine:<input type="number" id="timer" name="timer" value="13.5" style="width: 50px;"> <span onclick="addToken()">min</span>
+      <div>
+        CPU:<input type="number" id="cpu" name="cpu" value="90" style="width: 50px;"> % |
+       CPU Timer:<input type="number" id="cpu-timer" name="cpu-timer" value="3" style="width: 50px;"> <span onclick="addToken()">min</span>
+      </div>
       <div>
         User:<span id="text-user" style="color:blue">xxx.wax</span>
         Balance:<span id="text-balance" style="color:blue">0 TLM</span>
@@ -53,6 +56,7 @@
       function botRunningController(){
         const checkCpu = parseInt(document.getElementById("cpu").value)
         const timer = parseFloat(document.getElementById("timer").value)
+        const cpuTimer = parseFloat(document.getElementById("cpu-timer").value)
         bott.lineToken = document.getElementById("line-token").value
         if(bott.isBotRunning == true){
           bott.stop()
@@ -63,6 +67,7 @@
           }
           try{
             bott.timerDelay = (timer * 60) * 1000;
+            bott.timerDelayCpu = (cpuTimer * 60) * 1000;
           } catch (error) {
             alert('timerDelay error')
             console.error(error)
