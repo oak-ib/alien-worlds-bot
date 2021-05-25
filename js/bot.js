@@ -102,11 +102,6 @@ async start() {
   const userAccount = await wax.login();
   document.getElementById("text-user").innerHTML = userAccount
   console.log('timerDelay',this.timerDelay,'checkCpuPercent',this.checkCpuPercent)
-  unityInstance.SendMessage(
-    "Controller",
-    "Server_Response_LoginData",
-    userAccount
-  );
   this.isBotRunning = true;
   await this.delay(2000);
   console.log("bot StartBot");
@@ -139,11 +134,6 @@ async mine(userAccount){
     document.getElementById("text-balance").innerHTML = balance
     
     const mine_work = await background_mine(userAccount);
-    unityInstance.SendMessage(
-      "Controller",
-      "Server_Response_Mine",
-      JSON.stringify(mine_work)
-    );
 
     const mine_data = {
       miner: mine_work.account,
@@ -182,6 +172,7 @@ async mine(userAccount){
       );
       console.log(`%c[Bot] result is = ${result}`, 'color:green');
       var amounts = new Map();
+      var transaction_id = "";
       if (result && result.processed) {
         result.processed.action_traces[0].inline_traces.forEach((t) => {
           if (t.act.data.quantity) {
@@ -197,24 +188,19 @@ async mine(userAccount){
             } else {
               amounts.set(t.act.data.to, t.act.data.quantity);
             }
+            console.log('transaction_id1',transaction_id)
           }
+          console.log('transaction_id2',transaction_id)
+          transaction_id = result.transaction_id;
         });
-        unityInstance.SendMessage(
-          "Controller",
-          "Server_Response_Claim",
-          amounts.get(mine_work.account)
-        );
-        this.appendMessage(amounts.get(mine_work.account),'2')
+
+        const claimBounty = await getBountyFromTx(transaction_id, userAccount, ["https://api.waxsweden.org","https://wax.eosrio.io"])        
+        this.appendMessage(claimBounty.toString(),'2')
         this.firstMine = false;
         this.previousMineDone = true;
         this.checkMinedelay = true;
       }
     } catch (err) {
-      unityInstance.SendMessage(
-        "ErrorHandler",
-        "Server_Response_SetErrorData",
-        err.message
-      );
       this.previousMineDone = false;
       this.checkMinedelay = false;
       console.log(`%c[Bot] Error:${err.message}`, 'color:red');
