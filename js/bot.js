@@ -82,7 +82,7 @@ countDown(countDown){
     document.getElementById("text-cooldown").innerHTML = countDownDisplay + " Sec"
     countDown = countDown - 1000;
     countDownDisplay = countDown/1000;
-    if (countDown < 0) {
+    if (countDown < 1000) {
       clearInterval(x);
       document.getElementById("text-cooldown").innerHTML = "Go mine";
     }
@@ -122,9 +122,9 @@ async start() {
       }else{
         minedelay = await getMineDelay(userAccount);
       }
-      // console.log(`%c[Bot] Cooldown for ${Math.ceil((minedelay / 1000)/60)} min`, 'color:green');
-      this.countDown(minedelay)
+      // console.log(`%c[Bot] Cooldown for ${Math.ceil((minedelay / 1000)/60)} min`, 'color:green');      
       const RandomTimeWait = minedelay + Math.floor(1000 + (Math.random() * 9000))
+      this.countDown(minedelay)
       this.appendMessage(`Cooldown for ${Math.ceil((RandomTimeWait / 1000)/60)} min`)
       await this.delay(RandomTimeWait);
       minedelay = 0;      
