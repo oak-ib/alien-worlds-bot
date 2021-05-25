@@ -49,7 +49,6 @@ async checkCPU (userAccount){
     }else{
       accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
     }
-      console.log('accountDetail',accountDetail)
     if(accountDetail){
       const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
       console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')

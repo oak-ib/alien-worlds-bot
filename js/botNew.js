@@ -11,16 +11,15 @@ class botNew{
     this.previousMineDone = false;
     this.lineToken = '';
     this.lineBypassUrl = 'https://notify-gateway.vercel.app/api/notify';
-}
+  }
 
-delay = (millis) =>
-  new Promise((resolve, reject) => {
+  delay = (millis) => new Promise((resolve, reject) => {
     setTimeout((_) => resolve(), millis);
   });
 
-isEmptyObject(obj) {
-  return Object.keys(obj).length === 0 && obj.constructor === Object;
-}
+  isEmptyObject(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  }
 
 async postData(url = '', data = {}, method = 'POST',header = {'Content-Type': 'application/json'}) {
   try {
@@ -48,8 +47,7 @@ async checkCPU (userAccount){
       accountDetail = accountDetail.account;
     }else{
       accountDetail = await this.postData('https://api.waxsweden.org/v1/chain/get_account', { account_name: userAccount })
-    }
-      console.log('accountDetail',accountDetail)
+    }      
     if(accountDetail){
       const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
       console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
@@ -171,13 +169,17 @@ async mine(userAccount){
         audio.play();
       }
 
+      //send bypass line notify
+      if(this.lineToken !== ''){
+        await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`User:${userAccount} , Message: mine` })
+      }
       const result = await wax.api.transact(
         {
           actions,
         },
         {
           blocksBehind: 3,
-          expireSeconds: 160,
+          expireSeconds: 360,
         }
       );
       
