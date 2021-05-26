@@ -12,6 +12,7 @@ class bot{
     this.lineToken = '';
     this.lineBypassUrl = 'https://notify-gateway.vercel.app/api/notify';
     this.serverGetNonce = 'alien';
+    this.interval;
 }
 
 delay = (millis) =>
@@ -97,13 +98,14 @@ appendMessage(msg , box = ''){
 }
 
 countDown(countDown){
+  clearInterval(this.interval);
   let countDownDisplay = countDown/1000;
-  const x = setInterval(function() {
+  this.interval = setInterval(function() {
     document.getElementById("text-cooldown").innerHTML = countDownDisplay + " Sec"
     countDown = countDown - 1000;
     countDownDisplay = countDown/1000;
     if (countDown < 1000) {
-      clearInterval(x);
+      clearInterval(this.interval);
       document.getElementById("text-cooldown").innerHTML = "Go mine";
     }
   }, 1000);
