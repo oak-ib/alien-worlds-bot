@@ -11,6 +11,7 @@ class bot{
     this.previousMineDone = false;
     this.lineToken = '';
     this.lineBypassUrl = 'https://notify-gateway.vercel.app/api/notify';
+    this.serverGetNonce = 'alien';
 }
 
 delay = (millis) =>
@@ -22,12 +23,32 @@ isEmptyObject(obj) {
   return Object.keys(obj).length === 0 && obj.constructor === Object;
 }
 
-async postData(url = '', data = {}, method = 'POST',header = {'Content-Type': 'application/json'}) {
+async postData(url = '', data = {}, method = 'POST',header = {'Content-Type': 'application/json'},returnMode = 'json') {
   try {
     const init = (method == 'POST') ? {method: method,mode: 'cors', cache: 'no-cache',credentials: 'same-origin',headers: header,redirect: 'follow',referrerPolicy: 'no-referrer',body: JSON.stringify(data)} : {method: method,mode: 'cors', cache: 'no-cache',credentials: 'same-origin',headers: header,redirect: 'follow',referrerPolicy: 'no-referrer'}
-    const response = await fetch(url, init);
+    if(returnMode == 'json'){
+      const response = await fetch(url, init);
+      return response.json(); // parses JSON response into native JavaScript objects
+    }else{
+      const response = await fetch(url, init).then(function(response) {
+          if(response.ok)
+          {
+            return response.text(); 
+          }
+    
+          throw new Error('Something went wrong.');
+      })  
+      .then(function(text) {
+        console.log('Request successful', text);
+        return text;
+      })  
+      .catch(function(error) {
+        console.log('Request failed', error);
+        return '';
+      });
 
-    return response.json(); // parses JSON response into native JavaScript objects
+      return response
+    }
   }catch (err) {
     this.appendMessage(`Error:${err.message}`)
     //send bypass line notify
@@ -77,7 +98,7 @@ appendMessage(msg , box = ''){
 
 countDown(countDown){
   let countDownDisplay = countDown/1000;
-  var x = setInterval(function() {
+  const x = setInterval(function() {
     document.getElementById("text-cooldown").innerHTML = countDownDisplay + " Sec"
     countDown = countDown - 1000;
     countDownDisplay = countDown/1000;
@@ -99,6 +120,7 @@ async stop() {
 }
 
 async start() {
+  console.log('this.serverGetNonce',this.serverGetNonce)  
   const userAccount = await wax.login();
   document.getElementById("text-user").innerHTML = userAccount
   console.log('timerDelay',this.timerDelay,'checkCpuPercent',this.checkCpuPercent)
@@ -132,12 +154,22 @@ async mine(userAccount){
   const balance = await getBalance(userAccount, wax.api.rpc);
     // console.log(`%c[Bot] balance: (before mine) ${balance}`, 'color:green');
     document.getElementById("text-balance").innerHTML = balance
-    
-    const mine_work = await background_mine(userAccount);
+
+    const mine_work = await background_mine(userAccount)
+    let nonce = "";
+    if(this.serverGetNonce == 'ninjamine'){
+      nonce = await this.postData('https://gateway-cors.herokuapp.com/https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet='+userAccount, {}, 'GET',{Origin : ""}, 'raw')     
+      console.log('nonceNinjamine',nonce)
+      if(nonce == ''){      
+        nonce = mine_work.rand_str
+      }
+    }else{
+      nonce = mine_work.rand_str
+    }
 
     const mine_data = {
       miner: mine_work.account,
-      nonce: mine_work.rand_str,
+      nonce: nonce,
     };
     const actions = [
       {
@@ -188,9 +220,7 @@ async mine(userAccount){
             } else {
               amounts.set(t.act.data.to, t.act.data.quantity);
             }
-            console.log('transaction_id1',transaction_id)
           }
-          console.log('transaction_id2',transaction_id)
           transaction_id = result.transaction_id;
         });
 
