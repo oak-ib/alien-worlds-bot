@@ -205,11 +205,10 @@ async mine(userAccount){
       console.log(`%c[Bot] result is = ${result}`, 'color:green');
       var amounts = new Map();
       var transaction_id = "";
-      let mine_amount = 0;
       if (result && result.processed) {
         result.processed.action_traces[0].inline_traces.forEach((t) => {
           if (t.act.data.quantity) {
-            mine_amount = t.act.data.quantity;
+            let mine_amount = t.act.data.quantity;
             console.log(`%c[Bot] ${userAccount} Mined ${mine_amount}`, 'color:green');
             if (amounts.has(t.act.data.to)) {
               let obStr = amounts.get(t.act.data.to);
@@ -227,7 +226,7 @@ async mine(userAccount){
 
         // const claimBounty = await getBountyFromTx(transaction_id, userAccount, ["http://wax.greymass.com/","https://wax.eosrio.io"])        
         // this.appendMessage(claimBounty.toString(),'2')
-        this.appendMessage(mine_amount,'2')
+        this.appendMessage(amounts.get(mine_work.account),'2')
         this.firstMine = false;
         this.previousMineDone = true;
         this.checkMinedelay = true;
