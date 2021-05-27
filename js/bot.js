@@ -99,11 +99,11 @@ appendMessage(msg , box = ''){
 
 countDown(countDown){
   clearInterval(this.interval);
-  let countDownDisplay = countDown/1000;
+  let countDownDisplay = Math.floor(countDown/1000)
   this.interval = setInterval(function() {
     document.getElementById("text-cooldown").innerHTML = countDownDisplay + " Sec"
     countDown = countDown - 1000;
-    countDownDisplay = countDown/1000;
+    countDownDisplay = Math.floor(countDown/1000)
     if (countDown < 1000) {
       clearInterval(this.interval);
       document.getElementById("text-cooldown").innerHTML = "Go mine";
