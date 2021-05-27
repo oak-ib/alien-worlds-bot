@@ -226,7 +226,7 @@ async mine(userAccount){
           transaction_id = result.transaction_id;
         });
 
-        const claimBounty = await getBountyFromTx(transaction_id, userAccount, ["https://wax.pink.gg","https://wax.eosrio.io"])        
+        const claimBounty = await getBountyFromTx(transaction_id, userAccount, ["https://api.waxsweden.org","https://wax.eosrio.io"])        
         this.appendMessage(claimBounty.toString(),'2')
         this.firstMine = false;
         this.previousMineDone = true;
