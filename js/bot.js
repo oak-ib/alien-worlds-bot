@@ -157,28 +157,29 @@ async mine(userAccount){
     // console.log(`%c[Bot] balance: (before mine) ${balance}`, 'color:green');
     document.getElementById("text-balance").innerHTML = balance
 
-    let nonce = '';
+    const mine_work = await background_mine(userAccount)
+    let nonce = "";
     if(this.serverGetNonce == 'ninjamine'){
       nonce = await this.postData('https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet='+userAccount, {}, 'GET',{Origin : ""}, 'raw')     
-      console.log('nonceNinjamine', nonce)
-    }
-
-    if(this.serverGetNonce !== 'ninjamine' || nonce == ''){
-      const mine_work = await background_mine(userAccount)
+      console.log('nonceNinjamine',nonce)
+      if(nonce == ''){      
+        nonce = mine_work.rand_str
+      }
+    }else{
       nonce = mine_work.rand_str
     }
 
     const mine_data = {
-      miner: userAccount,
+      miner: mine_work.account,
       nonce: nonce,
     };
     const actions = [
       {
-        account: "m.federation",
+        account: mining_account,
         name: "mine",
         authorization: [
           {
-            actor: userAccount,
+            actor: mine_work.account,
             permission: "active",
           },
         ],
