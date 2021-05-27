@@ -226,7 +226,7 @@ async mine(userAccount){
 
         // const claimBounty = await getBountyFromTx(transaction_id, userAccount, ["http://wax.greymass.com/","https://wax.eosrio.io"])        
         // this.appendMessage(claimBounty.toString(),'2')
-        this.appendMessage(amounts.get(mine_work.account),'2')
+        this.appendMessage(amounts.get(userAccount),'2')
         this.firstMine = false;
         this.previousMineDone = true;
         this.checkMinedelay = true;
