@@ -157,33 +157,31 @@ async mine(userAccount){
     // console.log(`%c[Bot] balance: (before mine) ${balance}`, 'color:green');
     document.getElementById("text-balance").innerHTML = balance
 
-    const mine_work = await background_mine(userAccount)
     let nonce = "";
     if(this.serverGetNonce == 'ninjamine'){
       nonce = await this.postData('https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet='+userAccount, {}, 'GET',{Origin : ""}, 'raw')     
       console.log('nonceNinjamine',nonce)
-      if(nonce == ''){      
-        nonce = mine_work.rand_str
-      }
-    }else{
+    }
+
+    if(this.serverGetNonce == 'ninjamine' || nonce == ''){
+      const mine_work = await background_mine(userAccount)
       nonce = mine_work.rand_str
     }
 
-    const mine_data = {
-      miner: mine_work.account,
-      nonce: nonce,
-    };
     const actions = [
       {
-        account: mining_account,
+        account: "m.federation",
         name: "mine",
         authorization: [
           {
-            actor: mine_work.account,
+            actor: userAccount,
             permission: "active",
           },
         ],
-        data: mine_data,
+        data: {
+          miner: userAccount,
+          nonce: nonce,
+        },
       },
     ];
     
@@ -211,7 +209,7 @@ async mine(userAccount){
         result.processed.action_traces[0].inline_traces.forEach((t) => {
           if (t.act.data.quantity) {
             const mine_amount = t.act.data.quantity;
-            console.log(`%c[Bot] ${mine_work.account} Mined ${mine_amount}`, 'color:green');
+            console.log(`%c[Bot] ${userAccount} Mined ${mine_amount}`, 'color:green');
             if (amounts.has(t.act.data.to)) {
               let obStr = amounts.get(t.act.data.to);
               obStr = obStr.substring(0, obStr.length - 4);
