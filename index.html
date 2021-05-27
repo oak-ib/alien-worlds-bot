@@ -3,25 +3,13 @@
 <html lang="en-us">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="https://play.alienworlds.io/apple-touch-icon.png"
-    />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="manifest" href="https://awhelper.com/manifest.json" />
-
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no"
     />
-    <title>Alien Worlds</title>
-    <link
-      rel="shortcut icon"
-      href="https://play.alienworlds.io/TemplateData/favicon.ico"
-    />
+    <title>okBot</title>
     <link rel="stylesheet" href="./js/style.css" />
-    <script src="./js/UnityProgress.js" type="text/javascript"></script>
     <script src="./js/waxjs.js" type="text/javascript"></script>
   </head>
   <body style="background-color: rgb(151, 151, 151);">
@@ -52,9 +40,7 @@
       <div>Like this NINJA-MINER You can donate us by sending WAX to 2rqba.wam</div>
     </div>
 
-    <script src="./js/UnityLoader.js" type="text/javascript"></script>
     <script src="./js/bundle.js" type="text/javascript"></script>
-    <script src="./js/hashes.js" type="text/javascript"></script>
     <script src="./js/message_handler.js" type="text/javascript"></script>
     <script src="./js/moment.js" type="text/javascript"></script>
     <script src="./js/bot.js" type="text/javascript"></script>
@@ -130,65 +116,6 @@
 
         return result;
       }
-
-      // Initial screen setup
-      // unityContainer.style.height = window.innerHeight + "px";
-      unityInstance = UnityLoader.instantiate(
-        "unityContainer",
-        "Build/Build.json",
-        { onProgress: UnityProgress }
-      );
-
-      function Resize() {
-        document.getElementById("unityContainer").style.width =
-          window.innerWidth + "px";
-        document.getElementById("unityContainer").style.height =
-          window.innerHeight + "px";
-
-        if (UnityLoader.SystemInfo.mobile) {
-          if (navigator.userAgent.indexOf("Android") != -1) {
-            if (screen.width > screen.height) {
-              unityInstance.SendMessage(
-                "Canvas",
-                "SetScreenModePanel",
-                "false"
-              );
-            } else {
-              unityInstance.SendMessage("Canvas", "SetScreenModePanel", "true");
-            }
-          } else {
-            switch (window.orientation) {
-              case -90:
-              case 90:
-                unityInstance.SendMessage(
-                  "Canvas",
-                  "SetScreenModePanel",
-                  "false"
-                );
-                break;
-              default:
-                unityInstance.SendMessage(
-                  "Canvas",
-                  "SetScreenModePanel",
-                  "true"
-                );
-
-                break;
-            }
-          }
-        }
-      }
-
-      /*function Fullscreen() {
-      unityInstance.SetFullscreen(1);
-      if (navigator.userAgent.indexOf('Android') != -1)
-        window.screen.orientation.lock('landscape');
-    }*/
-
-      // window.addEventListener("orientationchange", Resize);
-
-      // Initial execution if needed
-      //Resize();
     </script>
   </body>
 </html>
