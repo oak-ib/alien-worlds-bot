@@ -244,6 +244,7 @@ async mine(userAccount){
       }
       if(this.checkCpuPercent == 0){
         await this.delay((this.timerDelayCpu * 60) * 1000);
+        this.appendMessage(`Delay error CPU ${this.timerDelayCpu} min`)
       }
     }
 
