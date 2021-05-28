@@ -244,9 +244,9 @@ async mine(userAccount){
         await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`User:${userAccount} , Message:${err.message}` })
       }
       if(this.checkCpuPercent == 0){
-        this.countDown(this.timerDelayCpu)
-        await this.delay((this.timerDelayCpu * 60) * 1000);
-        this.appendMessage(`Delay error CPU ${this.timerDelayCpu} min`)
+        this.appendMessage(`Delay error CPU ${(this.timerDelayCpu * 60) * 1000} min`)
+        this.countDown(this.timerDelayCpu)        
+        await this.delay((this.timerDelayCpu * 60) * 1000);        
       }
     }
 
