@@ -125,6 +125,7 @@ async start() {
   console.log('this.serverGetNonce',this.checkCpuPercent)  
   const userAccount = await wax.login();
   document.getElementById("text-user").innerHTML = userAccount
+  document.getElementsByTagName('title')[0].text = userAccount
   console.log('timerDelay',this.timerDelay,'checkCpuPercent',this.checkCpuPercent)
   this.isBotRunning = true;
   await this.delay(2000);
@@ -243,6 +244,7 @@ async mine(userAccount){
         await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`User:${userAccount} , Message:${err.message}` })
       }
       if(this.checkCpuPercent == 0){
+        this.countDown(this.timerDelayCpu)
         await this.delay((this.timerDelayCpu * 60) * 1000);
         this.appendMessage(`Delay error CPU ${this.timerDelayCpu} min`)
       }
