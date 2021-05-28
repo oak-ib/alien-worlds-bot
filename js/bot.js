@@ -186,8 +186,10 @@ async mine(userAccount){
     ];
     
     try {
-      console.log("bot checkCPU2");
-      await this.checkCPU(userAccount);
+      if(this.checkCpuPercent != 0){
+        console.log("bot checkCPU2");
+        await this.checkCPU(userAccount);
+      }
       if(this.alertCaptcha){
         const audio = new Audio('https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3');
         audio.play();
@@ -239,6 +241,9 @@ async mine(userAccount){
       //send bypass line notify
       if(this.lineToken !== ''){
         await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`User:${userAccount} , Message:${err.message}` })
+      }
+      if(this.checkCpuPercent == 0){
+        await this.delay((this.timerDelayCpu * 60) * 1000);
       }
     }
 
