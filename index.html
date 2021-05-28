@@ -56,9 +56,7 @@
             bott.stop()
             document.getElementById("btn-controller").innerHTML = "START"
           }else{          
-            if(checkCpu > 0){
-              bott.checkCpuPercent = checkCpu
-            }
+            bott.checkCpuPercent = checkCpu
             try{
               bott.timerDelay = (timer * 60) * 1000;
               bott.timerDelayCpu = (cpuTimer * 60) * 1000;

@@ -122,7 +122,7 @@ async stop() {
 }
 
 async start() {
-  console.log('this.serverGetNonce',this.serverGetNonce)  
+  console.log('this.serverGetNonce',this.checkCpuPercent)  
   const userAccount = await wax.login();
   document.getElementById("text-user").innerHTML = userAccount
   console.log('timerDelay',this.timerDelay,'checkCpuPercent',this.checkCpuPercent)
