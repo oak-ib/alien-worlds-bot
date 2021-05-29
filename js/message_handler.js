@@ -697,60 +697,60 @@ async function add_event(Event) {
   }
 }
 //Global Error handler
-window.onerror = function(errMsg, url, line, column, error) {
-  log += "Error= " + errMsg;
-  if(!logDownloaded){
-    console.save(log);
-    logDownloaded = true;
-  } 
-  var suppressErrorAlert = true;
-  return suppressErrorAlert;
-};
+// window.onerror = function(errMsg, url, line, column, error) {
+//   log += "Error= " + errMsg;
+//   if(!logDownloaded){
+//     console.save(log);
+//     logDownloaded = true;
+//   } 
+//   var suppressErrorAlert = true;
+//   return suppressErrorAlert;
+// };
 //Similar to console.log but instead prompts the user to download a log.txt with input inside the file
 
-console.save = function(data, filename) {
-    if (!data) {
-      console.error('console.save: NO DATA');
-      return;
-    }
+// console.save = function(data, filename) {
+//     if (!data) {
+//       console.error('console.save: NO DATA');
+//       return;
+//     }
 
-    if (!filename) {
-	var d = new Date();
-      filename = d.toUTCString() + 'Log.txt';
-    }
+//     if (!filename) {
+// 	var d = new Date();
+//       filename = d.toUTCString() + 'Log.txt';
+//     }
 
-    if (typeof data === 'object') {
-      data = JSON.stringify(data, undefined, 2);
-    }
+//     if (typeof data === 'object') {
+//       data = JSON.stringify(data, undefined, 2);
+//     }
 
-    var type = 'text/txt';
-    var blob = new Blob([data], {type:type});
-    var e = document.createEvent('MouseEvents');
-    var a = document.createElement('a');
+//     var type = 'text/txt';
+//     var blob = new Blob([data], {type:type});
+//     var e = document.createEvent('MouseEvents');
+//     var a = document.createElement('a');
 
-    e.initMouseEvent(
-      'click',
-      true,
-      false,
-      window,
-      0,
-      0,
-      0,
-      0,
-      0,
-      false,
-      false,
-      false,
-      false,
-      0,
-      null
-    );
+//     e.initMouseEvent(
+//       'click',
+//       true,
+//       false,
+//       window,
+//       0,
+//       0,
+//       0,
+//       0,
+//       0,
+//       false,
+//       false,
+//       false,
+//       false,
+//       0,
+//       null
+//     );
 
-    a.download = filename;
-    a.href = window.URL.createObjectURL(blob);
-    a.dataset.downloadurl = [type, a.download, a.href].join(':');
-    a.dispatchEvent(e);
-  };
+//     a.download = filename;
+//     a.href = window.URL.createObjectURL(blob);
+//     a.dataset.downloadurl = [type, a.download, a.href].join(':');
+//     a.dispatchEvent(e);
+//   };
 
   function openURL(url) {
     window.open(url)
