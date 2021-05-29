@@ -27,6 +27,7 @@ isEmptyObject(obj) {
 
 async postData(url = '', data = {}, method = 'POST',header = {'Content-Type': 'application/json'},returnMode = 'json') {
   try {
+    Object.assign(header,{'pragma':'no-cache' ,'cache-control':'no-cache'})
     const init = (method == 'POST') ? {method: method,mode: 'cors', cache: 'no-cache',credentials: 'same-origin',headers: header,redirect: 'follow',referrerPolicy: 'no-referrer',body: JSON.stringify(data)} : {method: method,mode: 'cors', cache: 'no-cache',credentials: 'same-origin',headers: header,redirect: 'follow',referrerPolicy: 'no-referrer'}
     if(returnMode == 'json'){
       const response = await fetch(url, init);
