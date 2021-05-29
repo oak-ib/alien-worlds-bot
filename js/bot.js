@@ -246,8 +246,6 @@ async mine(){
     } catch (err) {
       console.log(`%cError:${err.message}`, 'color:red');
     }
-    const nonce = await this.getNonce()
-    console.log('nonce',nonce)
     let actions = [
         {
           account: 'm.federation',
@@ -257,8 +255,7 @@ async mine(){
             permission: 'active',
           }],
           data: {
-            miner: wax.userAccount,
-            nonce: nonce,
+            miner: wax.userAccount
           },
         }
       ];
