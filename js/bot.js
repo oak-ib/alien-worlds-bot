@@ -73,13 +73,17 @@ async checkCPU (){
       accountDetail = await this.postData('https://wax.pink.gg/v1/chain/get_account', { account_name: wax.userAccount }) //https://api.waxsweden.org
     }
     if(accountDetail){
+      i ++;
       const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
       console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
       const ms = accountDetail.cpu_limit.max - accountDetail.cpu_limit.used;
       this.appendMessage(`CPU ${rawPercent}% : ${ms} ms`)
       if(rawPercent < this.checkCpuPercent){
         result = false;
-      }
+      }else if(i > 2){
+        result = false;
+        this.appendMessage(`Check CPU ${i} times --> mine`)    
+      }  
     }
     
     if(result && accountDetail){
@@ -88,13 +92,12 @@ async checkCPU (){
       this.appendMessage(`CPU delay check ${Math.ceil(delayCheckCpu/1000/60)} min`)
       this.countDown(delayCheckCpu + randomTimer)
       await this.delay(delayCheckCpu + randomTimer);
-      i ++;
     }
   }
 }
 
 appendMessage(msg , box = ''){
-  const dateNow = moment().format('DD/MM/YYYY h:mm:ss');
+  const dateNow = moment().format('DD/MM/YYYY H:mm:ss');
   const boxMessage = document.getElementById("box-message"+box)
   boxMessage.value += '\n'+ `${dateNow} : ${msg}`
   boxMessage.scrollTop = boxMessage.scrollHeight;
