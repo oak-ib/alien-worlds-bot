@@ -236,7 +236,8 @@ async mine(){
   claimnftsController(){
     clearInterval(this.autoClaimnfts);
     this.autoClaimnfts = setInterval(function() {
-      this.getClaimnfts()
+      var newBot = new bot()
+      newBot.getClaimnfts()
     }, 43200000); //12 hours 
   }
 
