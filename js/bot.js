@@ -148,7 +148,6 @@ async start() {
 }
 
 async mine(){
-  document.getElementById("btn-mine").disabled = true
   const balance = await getBalance(wax.userAccount, wax.api.rpc);
     // console.log(`%c[Bot] balance: (before mine) ${balance}`, 'color:green');
     document.getElementById("text-balance").innerHTML = balance
@@ -217,7 +216,6 @@ async mine(){
     this.appendMessage(`balance (after mined): ${afterMindedBalance}`)
     document.getElementById("text-balance").innerHTML = afterMindedBalance
     // console.log(`%c[Bot] balance (after mined): ${afterMindedBalance}`, 'color:green');
-    document.getElementById("btn-mine").disabled = false
 }
 
   async getNonce(){
