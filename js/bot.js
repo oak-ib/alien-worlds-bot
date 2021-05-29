@@ -86,6 +86,7 @@ async checkCPU (){
       const randomTimer = Math.floor(Math.random() * 30001)
       const delayCheckCpu = this.timerDelayCpu
       this.appendMessage(`CPU delay check ${Math.ceil(delayCheckCpu/1000/60)} min`)
+      this.countDown(delayCheckCpu + randomTime)
       await this.delay(delayCheckCpu + randomTimer);
       i ++;
     }
