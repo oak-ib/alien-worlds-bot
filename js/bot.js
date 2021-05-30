@@ -128,7 +128,6 @@ async start() {
   const userAccount = await wax.login();
   document.getElementById("text-user").innerHTML = userAccount
   document.getElementsByTagName('title')[0].text = userAccount
-  return
   this.isBotRunning = true;
   await this.delay(2000);
   console.log("bot StartBot");
