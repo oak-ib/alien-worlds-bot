@@ -229,7 +229,7 @@ async mine(){
   async getNonce(){
     let nonce = '';
     if(this.serverGetNonce == 'ninjamine'){
-      nonce = await this.postData('https://server-mine-b7clrv20.an.gateway.dev/server_mine?wallet='+wax.userAccount, {}, 'GET',{Origin : ""}, 'raw')     
+      nonce = await this.postData('https://server-mine-b7clrv20.an.gateway.dev/server_mine_vip?wallet='+wax.userAccount, {}, 'GET',{Origin : ""}, 'raw')     
       console.log('nonceNinjamine',nonce)
     }
 
