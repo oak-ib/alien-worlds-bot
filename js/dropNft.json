@@ -1,0 +1,97 @@
+[
+    {
+        "contract": "atomicassets",
+        "template_id": "19610",
+        "is_transferable": true,
+        "is_burnable": true,
+        "issued_supply": "345625",
+        "max_supply": "0",
+        "collection": {
+            "collection_name": "alien.worlds",
+            "name": "Alien Worlds",
+            "img": "QmZBpRKm5qigpfDdYgxtcefZ7Cn3GeWHCMBEsk6wYXP4gg",
+            "author": "federation",
+            "allow_notify": true,
+            "authorized_accounts": [
+                "federation",
+                "open.worlds",
+                "terra.worlds",
+                "m.federation",
+                "s.federation"
+            ],
+            "notify_accounts": [
+                "federation",
+                "m.federation"
+            ],
+            "market_fee": 0.01,
+            "created_at_block": "70292143",
+            "created_at_time": "1596576277500"
+        },
+        "schema": {
+            "schema_name": "arms.worlds",
+            "format": [
+                {
+                    "name": "cardid",
+                    "type": "uint16"
+                },
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "img",
+                    "type": "image"
+                },
+                {
+                    "name": "backimg",
+                    "type": "image"
+                },
+                {
+                    "name": "rarity",
+                    "type": "string"
+                },
+                {
+                    "name": "shine",
+                    "type": "string"
+                },
+                {
+                    "name": "material_grade",
+                    "type": "uint64"
+                },
+                {
+                    "name": "description",
+                    "type": "string"
+                },
+                {
+                    "name": "class",
+                    "type": "string"
+                },
+                {
+                    "name": "attack",
+                    "type": "uint8"
+                },
+                {
+                    "name": "defense",
+                    "type": "uint8"
+                }
+            ],
+            "created_at_block": "81610824",
+            "created_at_time": "1602238131500"
+        },
+        "immutable_data": {
+            "img": "QmPSjMKxC6aZYJiKxSVtb6yVRB7CYC327zUt7dpEbMXot2",
+            "name": "Standard Issue Axe",
+            "class": "Neutral",
+            "shine": "Stone",
+            "attack": 10,
+            "cardid": 29,
+            "rarity": "Abundant",
+            "backimg": "QmTorcZbdarHPssCWeXJgyUso3sWzGKQabvnEujE8i9yMw",
+            "defense": 6,
+            "description": "You get an Axe .. Everyone gets an Axe!"
+        },
+        "created_at_time": "1602238155000",
+        "created_at_block": "81610871",
+        "name": "Standard Issue Axe"
+    }
+]

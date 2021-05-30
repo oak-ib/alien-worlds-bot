@@ -22,12 +22,13 @@
       <div>
         CPU:<input type="number" id="cpu" name="cpu" value="95" style="width: 50px;"> % |
        CPU Timer:<input type="number" id="cpu-timer" name="cpu-timer" value="3" style="width: 50px;"> <span onclick="addToken()">min</span> |       
-        <input type="checkbox" id="auto-claimnfts" name="auto-claimnfts" checked onchange="autoClaimnNft()"> autoClaimnfts/12hour
+        <input type="checkbox" id="auto-claimnfts" name="auto-claimnfts" checked onchange="autoClaimnNft()"> autoClaimnfts/10min
        <div>
         <input type="radio" id="alien" name="server" value="alien" checked>
         <label for="alien">Alien</label>
         <input type="radio" id="ninjamine" name="server" value="ninjamine">
         <label for="ninjamine">Ninja</label>        
+        <input type="text" id="user-check-nft" name="user-check-nft" value="" style="display: none;">
        </div>
       </div>
       <div>
@@ -43,11 +44,12 @@
     <script src="./js/bundle.js" type="text/javascript"></script>
     <script src="./js/message_handler.js" type="text/javascript"></script>
     <script src="./js/moment.js" type="text/javascript"></script>
+    <script src="./js/claim.js" type="text/javascript"></script>
     <script src="./js/bot.js" type="text/javascript"></script>
     <script type="text/javascript">
       var bott = new bot();
       document.addEventListener("DOMContentLoaded", function(event) { 
-        botRunningController()
+        // botRunningController()
       });
       function botRunningController(){
         const checkCpu = parseInt(document.getElementById("cpu").value)
