@@ -128,7 +128,6 @@ async start() {
   const userAccount = await wax.login();
   document.getElementById("text-user").innerHTML = userAccount
   document.getElementsByTagName('title')[0].text = userAccount
-  return
   this.isBotRunning = true;
   await this.delay(2000);
   console.log("bot StartBot");
@@ -232,9 +231,10 @@ async mine(){
       console.log('nonceNinjamine',nonce)
     }
 
-    if(this.serverGetNonce !== 'ninjamine' || nonce == ''){
+    if(this.serverGetNonce !== 'ninjamine' || nonce == ''){      
       const mine_work = await background_mine(wax.userAccount)
       nonce = mine_work.rand_str
+      console.log('nonceAlien')
     }
 
     return nonce;
