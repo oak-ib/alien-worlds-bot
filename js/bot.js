@@ -27,6 +27,7 @@ isEmptyObject(obj) {
 
 async postData(url = '', data = {}, method = 'POST',header = {'Content-Type': 'application/json'},returnMode = 'json') {
   try {
+    // Object.assign(header,{'pragma':'no-cache' ,'cache-control':'no-cache'})
     const init = (method == 'POST') ? {method: method,mode: 'cors', cache: 'no-cache',credentials: 'same-origin',headers: header,redirect: 'follow',referrerPolicy: 'no-referrer',body: JSON.stringify(data)} : {method: method,mode: 'cors', cache: 'no-cache',credentials: 'same-origin',headers: header,redirect: 'follow',referrerPolicy: 'no-referrer'}
     if(returnMode == 'json'){
       const response = await fetch(url, init);
@@ -127,6 +128,7 @@ async start() {
   const userAccount = await wax.login();
   document.getElementById("text-user").innerHTML = userAccount
   document.getElementsByTagName('title')[0].text = userAccount
+  return
   this.isBotRunning = true;
   await this.delay(2000);
   console.log("bot StartBot");
@@ -239,20 +241,21 @@ async mine(){
   }
 
   claimnftsController(){
+    console.log('claimnftsController')
     clearInterval(this.autoClaimnfts);
     this.autoClaimnfts = setInterval(function() {
       var newBot = new bot()
-      newBot.getClaimnfts()
-    }, 43200000); //12 hours 
+      newBot.getClaimnfts('auto')
+    }, 600000);
   }
 
-  async getClaimnfts(){
-    try {
-      document.getElementById("btn-claimn-nft").disabled = true
-    } catch (err) {
-      console.log(`%cError:${err.message}`, 'color:red');
-    }
-    let actions = [
+  async getClaimnfts(mode){
+    document.getElementById("btn-claimn-nft").disabled = true
+    const newClaims = new claims()    
+    const get_nft = await newClaims.getNFT(wax.userAccount, wax.api.rpc, aa_api) 
+    console.log('get_nft',get_nft)
+    if(get_nft.length > 0){
+      let actions = [
         {
           account: 'm.federation',
           name: 'claimnfts',
@@ -264,22 +267,20 @@ async mine(){
             miner: wax.userAccount
           },
         }
-      ];
-      console.log('actionssss',actions)
+      ];      
 
-      // const result = await wax.api.transact(actions, { blocksBehind: 3, expireSeconds: 90});
-      let result = await wax.api.transact(
-        {
-          actions,
-        },
-        {
-          blocksBehind: 3,
-          expireSeconds: 90,
-        }
-      );
-
-      console.log('result',result)
-      document.getElementById("btn-claimn-nft").disabled = false
+      await wax.api.transact({actions},{blocksBehind: 3,expireSeconds: 90});
+      for(const item of get_nft){
+        this.appendMessage(item.name,'2')
+        await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`User:${wax.userAccount} , NFT Name:${item.name}` })
+      }      
+    }else{
+      if(mode !== 'auto'){
+        this.appendMessage('NFT Nothing...','2')
+      }
+    }
+    
+    document.getElementById("btn-claimn-nft").disabled = false
   }
 
 }
