@@ -23,13 +23,14 @@
         CPU:<input type="number" id="cpu" name="cpu" value="95" style="width: 50px;"> % |
        CPU Timer:<input type="number" id="cpu-timer" name="cpu-timer" value="3" style="width: 50px;"> <span onclick="addToken()">min</span> |       
         <input type="checkbox" id="auto-claimnfts" name="auto-claimnfts" checked onchange="autoClaimnNft()"> autoClaimnfts/10min
-       <div>
-        <input type="radio" id="alien" name="server" value="alien">
-        <label for="alien">Alien</label>
-        <input type="radio" id="ninjamine" name="server" value="ninjamine" checked>
-        <label for="ninjamine">Ninja</label>        
-        <input type="text" id="user-check-nft" name="user-check-nft" value="" style="display: none;">
-       </div>
+        <div>
+          <input type="radio" id="alien" name="server" value="alien">
+          <label for="alien">Alien</label>
+          <input type="radio" id="ninjamine" name="server" value="ninjamine" checked>
+          <label for="ninjamine">Ninja limit rate</label>
+          <input type="radio" id="ninjamine-vip" name="server" value="ninjamine-vip">
+          <label for="ninjamine-vip" style="color:rgb(255, 255, 255)">Ninja VIP god mode</label>
+         </div>
       </div>
       <div>
         User:<span id="text-user" style="color:blue">xxx.wax</span>
@@ -55,8 +56,7 @@
         const checkCpu = parseInt(document.getElementById("cpu").value)
         const timer = parseFloat(document.getElementById("timer").value)
         const cpuTimer = parseFloat(document.getElementById("cpu-timer").value) 
-        bott.lineToken = document.getElementById("line-token").value
-        bott.serverGetNonce = getValueRadio("server")        
+        bott.lineToken = document.getElementById("line-token").value     
           if(bott.isBotRunning == true){
             clearInterval(bott.autoClaimnfts);
             bott.stop()
@@ -134,19 +134,6 @@
 
       const addToken = () => {
         document.getElementById("line-token").value = 'OCOJHjrQVrLmLi6TmOKaohSB7sE3Ar041y7RbKUV7sT'
-      }
-
-      function getValueRadio(name){
-        const radios = document.getElementsByName(name);
-        let result = '';
-        for (var i = 0, length = radios.length; i < length; i++) {
-          if (radios[i].checked) {
-            result = radios[i].value;
-            break;
-          }
-        }
-
-        return result;
       }
     </script>
   </body>

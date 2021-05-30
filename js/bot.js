@@ -228,15 +228,21 @@ async mine(){
 
   async getNonce(){
     let nonce = '';
-    if(this.serverGetNonce == 'ninjamine'){
-      nonce = await this.postData('https://server-mine-b7clrv20.an.gateway.dev/server_mine_vip?wallet='+wax.userAccount, {}, 'GET',{Origin : ""}, 'raw')     
-      console.log('nonceNinjamine',nonce)
+    const serverGetNonce = document.querySelector('input[name="server"]:checked').value
+    if(serverGetNonce == 'ninjamine' || serverGetNonce == 'ninjamine-vip'){
+      let urlNinJa = 'https://server-mine-b7clrv20.an.gateway.dev/server_mine'      
+      if(serverGetNonce == 'ninjamine-vip'){
+        urlNinJa = 'https://server-mine-b7clrv20.an.gateway.dev/server_mine_vip';
+      }
+      console.log('urlNinJa',urlNinJa)
+      nonce = await this.postData(urlNinJa+'?wallet='+wax.userAccount, {}, 'GET',{Origin : ""}, 'raw')     
+      console.log('nonce-ninjamine',nonce)
     }
 
-    if(this.serverGetNonce !== 'ninjamine' || nonce == ''){      
+    if(this.serverGetNonce == 'alien' || nonce == ''){
       const mine_work = await background_mine(wax.userAccount)
       nonce = mine_work.rand_str
-      console.log('nonceAlien')
+      console.log('nonce-alien',nonce)
     }
 
     return nonce;
