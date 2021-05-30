@@ -144,7 +144,7 @@ async start() {
       }
       // console.log(`%c[Bot] Cooldown for ${Math.ceil((minedelay / 1000)/60)} min`, 'color:green');      
       const RandomTimeWait = minedelay + Math.floor(1000 + (Math.random() * 9000))
-      this.countDown(minedelay)
+      this.countDown(RandomTimeWait)
       this.appendMessage(`Cooldown for ${Math.ceil((RandomTimeWait / 1000)/60)} min`)
       await this.delay(RandomTimeWait);
       minedelay = 0;      
@@ -209,7 +209,9 @@ async mine(){
       this.appendMessage(`Error:${err.message}`)
       //send bypass line notify
       if(this.lineToken !== ''){
-        await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`User:${wax.userAccount} , Message:${err.message}` })
+        if(err.message.indexOf("billed CPU time") == -1){
+          await this.postData(this.lineBypassUrl, { token: this.lineToken, message:`User:${wax.userAccount} , Message:${err.message}` })
+        }
       }
       if(this.checkCpuPercent == 0){
         this.appendMessage(`Delay error CPU ${Math.ceil((this.timerDelayCpu / 1000)/60)} min`)
@@ -246,7 +248,7 @@ async mine(){
     this.autoClaimnfts = setInterval(function() {
       var newBot = new bot()
       newBot.getClaimnfts('auto')
-    }, 600000);
+    }, 3600000);
   }
 
   async getClaimnfts(mode){
