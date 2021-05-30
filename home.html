@@ -46,7 +46,10 @@
     <script src="./js/bot.js" type="text/javascript"></script>
     <script type="text/javascript">
       var bott = new bot();
-      function botRunningController(action){
+      document.addEventListener("DOMContentLoaded", function(event) { 
+        botRunningController()
+      });
+      function botRunningController(){
         const checkCpu = parseInt(document.getElementById("cpu").value)
         const timer = parseFloat(document.getElementById("timer").value)
         const cpuTimer = parseFloat(document.getElementById("cpu-timer").value) 
