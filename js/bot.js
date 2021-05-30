@@ -246,7 +246,7 @@ async mine(){
     this.autoClaimnfts = setInterval(function() {
       var newBot = new bot()
       newBot.getClaimnfts('auto')
-    }, 600000);
+    }, 3600000);
   }
 
   async getClaimnfts(mode){
