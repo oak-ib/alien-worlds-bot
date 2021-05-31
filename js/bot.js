@@ -76,9 +76,10 @@ async checkCPU (){
     if(accountDetail){
       i ++;
       const rawPercent = ((accountDetail.cpu_limit.used/accountDetail.cpu_limit.max)*100).toFixed(2)
-      console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
+      // console.log(`%c[Bot] rawPercent : ${rawPercent}%`, 'color:green')
       const ms = accountDetail.cpu_limit.max - accountDetail.cpu_limit.used;
       this.appendMessage(`CPU ${rawPercent}% : ${ms} ms`)
+      console.log('n-cpu-mine',parseInt(document.getElementById("n-cpu-mine").value))
       if(rawPercent < this.checkCpuPercent){
         result = false;
       }else if(i > parseInt(document.getElementById("n-cpu-mine").value)){

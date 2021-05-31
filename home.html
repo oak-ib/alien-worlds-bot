@@ -21,9 +21,11 @@
       <button id="btn-claimn-nft" onclick="botClaimnNft()">Claim NFT</button>
       <div>
         CPU:<input type="number" id="cpu" name="cpu" value="95" style="width: 50px;"> % |
-       CPU Timer:<input type="number" id="cpu-timer" name="cpu-timer" value="3" style="width: 50px;"> <span onclick="addToken()">min</span> |   
-       Number check CPU to mine:<input type="number" id="n-cpu-mine" name="n-cpu-mine" value="3" style="width: 50px;">    
+       CPU Timer:<input type="number" id="cpu-timer" name="cpu-timer" value="3" style="width: 50px;"> <span onclick="addToken()">min</span>
+       <div>
+         Number check CPU to mine:<input type="number" id="n-cpu-mine" name="n-cpu-mine" value="3" style="width: 50px;">    
         <input type="checkbox" id="auto-claimnfts" name="auto-claimnfts" checked onchange="autoClaimnNft()"> autoClaimnfts/10min
+      </div>  
         <div>
           <input type="radio" id="alien" name="server" value="alien" checked>
           <label for="alien">Alien</label>
