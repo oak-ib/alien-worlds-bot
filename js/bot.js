@@ -11,7 +11,7 @@ class bot{
     this.previousMineDone = false;
     this.lineToken = '';
     this.lineBypassUrl = 'https://notify-gateway.vercel.app/api/notify';
-    this.serverGetNonce = 'alien';
+    // this.serverGetNonce = 'alien';
     this.interval;
     this.autoClaimnfts;
 }
@@ -228,7 +228,7 @@ async mine(){
 }
 
 async getNonce(){
-  let nonce = '';
+  let nonce = null;
   let message = ''
   const serverGetNonce = document.querySelector('input[name="server"]:checked').value
   if(serverGetNonce == 'ninjamine' || serverGetNonce == 'ninjamine-vip'){
@@ -248,7 +248,7 @@ async getNonce(){
     console.log('nonce-ninjamine',nonce)
   }
 
-  if(this.serverGetNonce == 'alien' || nonce == ''){
+  if(serverGetNonce == 'alien' || nonce == ''){
     const mine_work = await background_mine(wax.userAccount)
     nonce = mine_work.rand_str
     console.log('nonce-alien',nonce)
