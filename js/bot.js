@@ -265,7 +265,7 @@ async getNonce(){
     this.autoClaimnfts = setInterval(function() {
       var newBot = new bot()
       newBot.getClaimnfts('auto')
-    }, 3600000);
+    }, 600000);
   }
 
   async getClaimnfts(mode){
