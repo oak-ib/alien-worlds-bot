@@ -82,7 +82,7 @@ async checkCPU (){
       console.log('n-cpu-mine',parseInt(document.getElementById("n-cpu-mine").value))
       if(rawPercent < this.checkCpuPercent){
         result = false;
-      }else if(i > parseInt(document.getElementById("n-cpu-mine").value)){
+      }else if(i >= parseInt(document.getElementById("n-cpu-mine").value)){
         result = false;
         this.appendMessage(`Check CPU ${i} times --> mine`)    
       }  
