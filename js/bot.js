@@ -270,8 +270,7 @@ async getNonce(){
   async getClaimnfts(mode){
     document.getElementById("btn-claimn-nft").disabled = true
     const newClaims = new claims()
-    const userCheckNft = document.getElementById("user-check-nft").value == '' ? wax.userAccount : document.getElementById("user-check-nft").value
-    const get_nft = await newClaims.getNFT(userCheckNft, wax.api.rpc, aa_api) 
+    const get_nft = await newClaims.getNFT(wax.userAccount, wax.api.rpc, aa_api) 
     console.log('get_nft',get_nft)
     if(get_nft.length > 0){
       let actions = [
